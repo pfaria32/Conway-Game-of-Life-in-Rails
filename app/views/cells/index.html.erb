@@ -1,0 +1,12 @@
+<div class="container">
+  <%= 1001.times do  %>
+    <tr>
+      <%= 1001.times do %>
+        <td class="cell_alive" id=<%="#{@x},#{@y}"%>></td>
+        <% @x -= 1 %>
+      <% end %>
+    <tr>
+    <% @x = 1000 %>
+    <% @y -= 1 %>
+  <% end %>
+</div>
