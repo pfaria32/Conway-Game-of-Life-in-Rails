@@ -2,8 +2,8 @@ class CellsController < ApplicationController
 
  def index
   @cells = Cell.all
-  @x = 1000
-  @y = 1000
+  @x = 0
+  @y = 40
  end
   # def rule_1(cell)  # Any live cell with fewer than two live neighbors dies, as if caused by under population.
   #                   # Any live cell with two or three live neighbors lives on to the next generation.

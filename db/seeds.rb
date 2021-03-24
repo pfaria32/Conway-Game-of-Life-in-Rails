@@ -8,8 +8,8 @@
 x = 0
 y = 0
 
-1001.times do
-  1001.times do
+41.times do
+  41.times do
     Cell.create(x_position: x, y_position: y, is_alive: false)
     puts "created cell x = #{x}, y = #{y}!"
     x += 1
