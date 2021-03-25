@@ -1,24 +1,17 @@
+<div style="text-align: center;"><button id="go">Go!</button></div>
 <div class="container">
   <table style="width: 100%">
-    <tr>
-      <% 41.times do %>
-        <th class="cell_dead"></th>
-      <% end %>
-    </tr>
-    <% 41.times do  %>
+    <% 51.times do  %>
       <tr>
-        <% 41.times do %>
-
+        <% 51.times do %>
             <td class="cell_dead" id=<%= "#{@x},#{@y}" %>></td>
             <% @x += 1 %>
             <% end %>
-
       <tr>
       <% @x = 0 %>
       <% @y -= 1 %>
     <% end %>
   </table>
-  <button id="go">Go!</button>
 </div>
 <%= javascript_pack_tag 'cell_dead' %>
 <%= javascript_pack_tag 'cell_alive' %>
