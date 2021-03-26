@@ -6,42 +6,49 @@ function yCoord(mainId) {
   return mainId.match(/(?:\d{1,4},)(\d{1,4})/);
 }
 
-function cellBehavior(coordMapX, coordMapY) {
-  // const Cell1 = [[x+0],[y+1]];
-  // const Cell2 = [[x+0],[y-1]];
-  // const Cell3 = [[x+1],[y+0]];
-  // const Cell4 = [[x-1],[y+0]];
-  // const Cell5 = [[x-1],[y-1]];
-  // const Cell6 = [[x-1],[y+1]];
-  // const Cell7 = [[x+1],[y-1]];
-  // const Cell8 = [[x+1],[y+1]];
-  // em relacao a cada celula viva, qual é o status das 8 células acima??
-  console.log(coordMapX);
-  console.log(coordMapY);
-  let surroundX = [];
-  let surroundY = [];
-  coordMapX.forEach((x) => {
-    surroundX.push([[(x + 0)], [(x + 0)], [(x + 1)], [(x - 1)], [(x - 1)], [(x - 1)], [(x + 1)], [(x + 1)]]);
-  })
-  coordMapY.forEach((y) => {
-    surroudY.push([[(y + 1)], [(y - 1)], [(y + 0)], [(y + 0)], [(y - 1)], [(y + 1)], [(y - 1)], [(y + 1)]]);
-  })
+function surroundingCells(coordMap) {
+  let surroundXy = [];
+  coordMap.forEach((x) => {
+    surroundXy.push([
+      [(x[0] + 0), (x[1] + 1)],
+      [(x[0] + 0), (x[1] - 1)],
+      [(x[0] + 1), (x[1] + 0)],
+      [(x[0] - 1), (x[1] + 0)],
+      [(x[0] - 1), (x[1] - 1)],
+      [(x[0] - 1), (x[1] + 1)],
+      [(x[0] + 1), (x[1] - 1)],
+      [(x[0] + 1), (x[1] + 1)]
+      ]);
+  });
+  return surroundXy;
+}
+
+function htmlOfCells(surroundCells) {
+  let htmlOfAllCells = []
+  let htmlOfCellsAroundOneLiving = []
+  surroundCells.forEach((cells) => {
+    cells.forEach((cell) => {
+      htmlOfCellsAroundOneLiving.push(document.getElementById(cell));
+    });
+    htmlOfAllCells.push(htmlOfCellsAroundOneLiving);
+    htmlOfCellsAroundOneLiving = [];
+  });
+  return htmlOfAllCells;
 }
 
 document.addEventListener('turbolinks:load', () => {
   const goButton = document.getElementById('go');
   goButton.addEventListener('click', (event) => {
     const cellAlive = document.querySelectorAll(".cell_alive");
-    coordMapX = new Map ();
-    coordMapY = new Map ();
+    coordMap = [];
     coordCounter = 1;
     cellAlive.forEach((x) => {
       mainId = x.id
-      coordMapX.set(coordCounter, xCoord(mainId));
-      coordMapY.set(coordCounter, yCoord(mainId));
-      coordCounter += 1;
+      coordMap.push([parseInt(xCoord(mainId)[1]), parseInt(yCoord(mainId)[1])]);
     });
-    cellBehavior(coordMapX, coordMapY);
+    const surroundCells = surroundingCells(coordMap);
+    htmlOfCells(surroundCells);
+    // ainda precisa: (i) retornar status(classe de cada celula; e (ii)determinar o comportamento em relacao ao status verificado)
   });
 });
 
