@@ -6,6 +6,14 @@ function yCoord(mainId) {
   return mainId.match(/(?:\d{1,4},)(\d{1,4})/);
 }
 
+function htmlOfMainCells(coordMap) {
+  htmlOfMainCells = [];
+  coordMap.forEach((cell) => {
+    htmlOfMainCells.push(document.getElementById(cell));
+  });
+  return htmlOfMainCells;
+}
+
 function surroundingCells(coordMap) {
   let surroundXy = [];
   coordMap.forEach((x) => {
@@ -36,6 +44,12 @@ function htmlOfCells(surroundCells) {
   return htmlOfAllCells;
 }
 
+// function checkSurroundCellsStatus(htmlOfSurroundCells) {
+//  htmlOfSurroundCells.forEach((cell) => {
+//   console.log(cell.classList.contains("cell_alive"));
+//  });
+// }
+
 document.addEventListener('turbolinks:load', () => {
   const goButton = document.getElementById('go');
   goButton.addEventListener('click', (event) => {
@@ -46,8 +60,13 @@ document.addEventListener('turbolinks:load', () => {
       mainId = x.id
       coordMap.push([parseInt(xCoord(mainId)[1]), parseInt(yCoord(mainId)[1])]);
     });
-    const surroundCells = surroundingCells(coordMap);
-    htmlOfCells(surroundCells);
+    let mainCells = htmlOfMainCells(coordMap);
+    let surroundCells = surroundingCells(coordMap);
+    let htmlOfSurroundCells = htmlOfCells(surroundCells);
+    console.log(mainCells);
+    console.log(htmlOfSurroundCells);
+    // console.log(htmlOfSurroundCells);
+    // checkSurroundCellsStatus(htmlOfSurroundCells);
     // ainda precisa: (i) retornar status(classe de cada celula; e (ii)determinar o comportamento em relacao ao status verificado)
   });
 });
