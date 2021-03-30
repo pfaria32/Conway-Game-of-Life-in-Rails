@@ -94,7 +94,6 @@ function deadCellProtocol(cellDead) {
   surroundCells = surroundingCells(cellDead);
   htmlOfSurroundCells = htmlOfCells(surroundCells);
   htmlCellMap = htmlCellMapping(cellDead, htmlOfSurroundCells);
-  console.log(htmlCellMap);
   deadCellLivingSituation = new Map;
   htmlCellMap.forEach((value, key) => {
     cellAliveCounter = 0;
@@ -124,32 +123,11 @@ function deadCellsLiveOrDie(allDeadCellsLivingSituation) {
   });
 }
 
-function infiniteLoop() {
-  while (true) {
-  let cellAlive = document.querySelectorAll(".cell_alive");
-    coordMap = [];
-    coordCounter = 1;
-    cellAlive.forEach((x) => {
-      mainId = x.id
-      coordMap.push([parseInt(xCoord(mainId)[1]), parseInt(yCoord(mainId)[1])]);
-    });
-    let mainCells = htmlOfMainCells(coordMap);
-    let surroundCells = surroundingCells(coordMap);
-    let htmlOfSurroundCells = htmlOfCells(surroundCells);
-    let htmlCellMap = htmlCellMapping(mainCells, htmlOfSurroundCells);
-    let surroundCellsLivingSituation = checksurroundCellsLivingSituation(htmlCellMap);
-    aliveCellsLiveOrDie(surroundCellsLivingSituation);
-    let cellDead = document.querySelectorAll(".cell_dead");
-    let allDeadCellsLivingSituation = deadCellProtocol(cellDead);
-    deadCellsLiveOrDie(allDeadCellsLivingSituation);
-  }
-}
-
-
 document.addEventListener('turbolinks:load', () => {
   const goButton = document.getElementById('go');
+  let xVar = true;
   goButton.addEventListener('click', (event) => {
-    while (true) {
+    for (let step =0; step < 201; step++) {
       let cellAlive = document.querySelectorAll(".cell_alive");
       coordMap = [];
       coordCounter = 1;
@@ -166,7 +144,7 @@ document.addEventListener('turbolinks:load', () => {
       let cellDead = document.querySelectorAll(".cell_dead");
       let allDeadCellsLivingSituation = deadCellProtocol(cellDead);
       deadCellsLiveOrDie(allDeadCellsLivingSituation);
-    }
+    };
   });
 });
 
