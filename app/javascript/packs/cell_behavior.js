@@ -7,11 +7,11 @@ function yCoord(mainId) {
 }
 
 function htmlOfMainCells(coordMap) {
-  htmlOfMainCells = [];
+  htmlCells = [];
   coordMap.forEach((cell) => {
-    htmlOfMainCells.push(document.getElementById(cell));
+    htmlCells.push(document.getElementById(cell));
   });
-  return htmlOfMainCells;
+  return htmlCells;
 }
 
 function surroundingCells(coordMap) {
@@ -81,7 +81,6 @@ function cellDies(cell) {
 }
 
 function aliveCellsLiveOrDie(surroundCellsLivingSituation) {
-  console.log(surroundCellsLivingSituation);
   surroundCellsLivingSituation.forEach((value, key) => {
     if (value < 2 || value > 3) {
       cellDies(key);
@@ -90,7 +89,6 @@ function aliveCellsLiveOrDie(surroundCellsLivingSituation) {
 }
 
 function deadCellProtocol(cellDead) {
-  console.log(cellDead);
   surroundCells = surroundingCells(cellDead);
   htmlOfSurroundCells = htmlOfCells(surroundCells);
   htmlCellMap = htmlCellMapping(cellDead, htmlOfSurroundCells);
@@ -123,28 +121,40 @@ function deadCellsLiveOrDie(allDeadCellsLivingSituation) {
   });
 }
 
+function behavior_loop() {
+  let breakVar = false
+  const stopButton = document.getElementById('stop');
+  stopButton.addEventListener('click', (event) => {
+    breakVar = true;
+  });
+  while (breakVar === false) {
+    let cellAlive = document.querySelectorAll(".cell_alive");
+    coordMap = [];
+    coordCounter = 1;
+    cellAlive.forEach((x) => {
+      mainId = x.id
+      coordMap.push([parseInt(xCoord(mainId)[1]), parseInt(yCoord(mainId)[1])]);
+    });
+    let mainCells = htmlOfMainCells(coordMap);
+    let surroundCells = surroundingCells(coordMap);
+    let htmlOfSurroundCells = htmlOfCells(surroundCells);
+    let htmlCellMap = htmlCellMapping(mainCells, htmlOfSurroundCells);
+    let surroundCellsLivingSituation = checksurroundCellsLivingSituation(htmlCellMap);
+    console.log(surroundCellsLivingSituation);
+    aliveCellsLiveOrDie(surroundCellsLivingSituation);
+    let cellDead = document.querySelectorAll(".cell_dead");
+    let allDeadCellsLivingSituation = deadCellProtocol(cellDead);
+    console.log(allDeadCellsLivingSituation);
+    deadCellsLiveOrDie(allDeadCellsLivingSituation);
+    setTimeout(behavior_loop, 2000);
+  };
+  return null;
+}
+
 document.addEventListener('turbolinks:load', () => {
   const goButton = document.getElementById('go');
-  let xVar = true;
   goButton.addEventListener('click', (event) => {
-    for (let step =0; step < 201; step++) {
-      let cellAlive = document.querySelectorAll(".cell_alive");
-      coordMap = [];
-      coordCounter = 1;
-      cellAlive.forEach((x) => {
-        mainId = x.id
-        coordMap.push([parseInt(xCoord(mainId)[1]), parseInt(yCoord(mainId)[1])]);
-      });
-      let mainCells = htmlOfMainCells(coordMap);
-      let surroundCells = surroundingCells(coordMap);
-      let htmlOfSurroundCells = htmlOfCells(surroundCells);
-      let htmlCellMap = htmlCellMapping(mainCells, htmlOfSurroundCells);
-      let surroundCellsLivingSituation = checksurroundCellsLivingSituation(htmlCellMap);
-      aliveCellsLiveOrDie(surroundCellsLivingSituation);
-      let cellDead = document.querySelectorAll(".cell_dead");
-      let allDeadCellsLivingSituation = deadCellProtocol(cellDead);
-      deadCellsLiveOrDie(allDeadCellsLivingSituation);
-    };
+    behavior_loop();
   });
 });
 
